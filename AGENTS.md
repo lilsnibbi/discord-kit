@@ -34,6 +34,8 @@ The declared logger version must exist on npm before generating the registry loc
 
 ## Releases
 
-The single `release.yml` workflow matches an entire `vX.Y.Z` tip commit message on the default branch. It verifies, updates metadata, atomically pushes the version commit and tag, publishes to npm, and generates GitHub release notes. Ordinary commits do not release. See `.github/RELEASE_POLICY.md` for setup and retries.
-Release scripts can commit and push. Do not run them during ordinary verification.
-Keep duplicated release helpers aligned with sibling `logger` and `toolkit` repositories.
+Release Please manages version and changelog PRs from Conventional Commits on main.
+Merging the release PR creates the tag and GitHub release; the publish job verifies
+and publishes that tag. See `.github/RELEASE_POLICY.md` for credentials and retries.
+Do not run release automation during ordinary verification.
+Keep shared release configuration and CI aligned with sibling repositories.
