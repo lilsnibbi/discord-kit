@@ -1,6 +1,6 @@
 {
 	"name": "@lilsnibbi/discord-kit",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Client, command, event and pagination structures for discord.js bots on the Bun runtime.",
 	"license": "MIT",
 	"private": false,
