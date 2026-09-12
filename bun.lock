@@ -8,10 +8,10 @@
         "@lilsnibbi/logger": "^1.1.0",
       },
       "devDependencies": {
-        "@biomejs/biome": "^2.5.12",
-        "@types/bun": "^1.4.0",
+        "@biomejs/biome": "2.5.12",
+        "@types/bun": "1.4.2",
         "discord.js": "^14.26.4",
-        "typescript": "^7.0.2",
+        "typescript": "7.0.2",
       },
       "peerDependencies": {
         "discord.js": "^14.26.4",
