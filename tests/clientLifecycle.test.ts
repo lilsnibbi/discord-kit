@@ -730,6 +730,31 @@ describe("shutdown", () => {
 		expect(destroy).toHaveBeenCalledTimes(1);
 	});
 
+	test("a hung error reporter cannot outlive the shutdown budget", async () => {
+		class Bot extends DiscordClient {
+			protected override onError(): Promise<void> {
+				return new Promise(() => {});
+			}
+		}
+		const bot = new Bot(options());
+		clients.push(bot);
+		bot.custom.shutdownTimeoutMs = 10;
+		const destroy = spyOn(Client.prototype, "destroy").mockResolvedValue();
+		bot.addShutdownHook(
+			"fails",
+			() => {
+				throw new Error("task");
+			},
+			{ stage: "stop" },
+		);
+		const result = await Promise.race([
+			bot.kill().then(() => "finished"),
+			Bun.sleep(100).then(() => "timed-out"),
+		]);
+		expect(result).toBe("finished");
+		expect(destroy).toHaveBeenCalled();
+	});
+
 	test("phase failures and reporter exceptions cannot stop later phases", async () => {
 		const done = mock(() => {});
 		const failures = await runDiscordShutdown(

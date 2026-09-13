@@ -40,7 +40,34 @@ export async function runDiscordShutdown(
 	const report = async (label: string, error: unknown) => {
 		failures.push({ label, error });
 		try {
-			await options.onError?.(label, error);
+			const reporter = Promise.resolve(options.onError?.(label, error)).then(
+				() => ({ status: "fulfilled" }) as const,
+				(reportError: unknown) =>
+					({ status: "rejected", error: reportError }) as const,
+			);
+			const remaining = deadline - performance.now();
+			if (remaining <= 0) {
+				void reporter;
+				return;
+			}
+			let timer: ReturnType<typeof setTimeout> | undefined;
+			const result = await Promise.race([
+				reporter,
+				new Promise<{ status: "timed-out" }>((resolve) => {
+					timer = setTimeout(() => resolve({ status: "timed-out" }), remaining);
+				}),
+			]);
+			clearTimeout(timer);
+			if (result.status === "rejected") {
+				failures.push({ label: `${label}:reporter`, error: result.error });
+			} else if (result.status === "timed-out") {
+				failures.push({
+					label: `${label}:reporter`,
+					error: new Error(
+						"Shutdown error reporter exceeded the remaining budget",
+					),
+				});
+			}
 		} catch (reportError) {
 			failures.push({ label: `${label}:reporter`, error: reportError });
 		}
