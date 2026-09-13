@@ -57,8 +57,8 @@ export interface DiscordEventOptions<
 	name: K;
 	/** Detach the listener after its first call. Defaults to `false`. */
 	once?: boolean;
-	/** Runs when the event fires. */
-	method: (client: C, ...args: EventArgs<T, K>) => void | Promise<void>;
+	/** Runs when the event fires. Method variance supports client subclasses. */
+	method(client: C, ...args: EventArgs<T, K>): void | Promise<void>;
 }
 
 /**
@@ -95,10 +95,7 @@ export class DiscordEvent<
 	/** Whether the listener detaches after its first call. */
 	public readonly once: boolean;
 	/** Runs when the event fires. */
-	public readonly method: (
-		client: C,
-		...args: EventArgs<T, K>
-	) => void | Promise<void>;
+	public readonly method: DiscordEventOptions<T, K, C>["method"];
 
 	constructor(options: DiscordEventOptions<T, K, C>) {
 		this.type = options.type;

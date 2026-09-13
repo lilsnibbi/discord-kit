@@ -60,6 +60,7 @@ test("published archive builds and exposes the public API", async () => {
 				"DiscordEvent",
 				"DiscordPagination",
 				"getClient",
+				"runDiscordShutdown",
 			],
 		};
 		const names = expected[manifest.name];
