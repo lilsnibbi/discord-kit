@@ -36,7 +36,7 @@ const options = (): DiscordClientOptions => ({
 		applicationId: "app",
 	},
 });
-const clients: DiscordClient[] = [];
+const clients: Client[] = [];
 const directories: string[] = [];
 const client = () => {
 	const instance = new DiscordClient(options());
@@ -179,6 +179,34 @@ describe("typed pieces and listeners", () => {
 		bot.registerPiece(event);
 		bot.rest.emit("restDebug", "three");
 		expect(handler).toHaveBeenCalledTimes(2);
+	});
+
+	test("REST listeners return asynchronous handler completion", async () => {
+		const bot = client();
+		const release = Promise.withResolvers<void>();
+		let handlerFinished = false;
+		bot.registerPiece(
+			new DiscordEvent({
+				type: "rest",
+				name: "restDebug",
+				method: async () => {
+					await release.promise;
+					handlerFinished = true;
+				},
+			}),
+		);
+		await bot.loadModules();
+		bot.rest.emit("restDebug", "x");
+		const listenersFinished = bot.rest.waitForAllListenersToComplete();
+		let waitFinished = false;
+		void listenersFinished.then(() => {
+			waitFinished = true;
+		});
+		await tick();
+		expect(waitFinished).toBe(false);
+		release.resolve();
+		await listenersFinished;
+		expect(handlerFinished).toBe(true);
 	});
 
 	test("sync, async, and reporter failures are contained", async () => {
@@ -720,7 +748,8 @@ describe("shutdown", () => {
 				{ label: "next", tasks: [done] },
 			],
 			{
-				onError: () => {
+				onError: async () => {
+					await tick();
 					throw new Error("reporter");
 				},
 			},

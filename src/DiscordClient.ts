@@ -379,7 +379,7 @@ export class DiscordClient extends Client {
 			if (event.once) this.boundEvents.delete(event);
 			if (this.isShuttingDown) return;
 			try {
-				Promise.resolve(event.method(this, ...args)).catch((error) =>
+				return Promise.resolve(event.method(this, ...args)).catch((error) =>
 					this.reportError(error, {
 						type: "event",
 						source: event.type,
@@ -387,7 +387,7 @@ export class DiscordClient extends Client {
 					}),
 				);
 			} catch (error) {
-				void this.reportError(error, {
+				return this.reportError(error, {
 					type: "event",
 					source: event.type,
 					name: String(event.name),
@@ -532,9 +532,8 @@ export class DiscordClient extends Client {
 					],
 					{
 						budgetMs: this.custom.shutdownTimeoutMs,
-						onError: (name, error) => {
-							void this.reportError(error, { type: "shutdown", name });
-						},
+						onError: (name, error) =>
+							this.reportError(error, { type: "shutdown", name }),
 					},
 				);
 			} finally {

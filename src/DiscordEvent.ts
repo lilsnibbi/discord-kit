@@ -57,8 +57,8 @@ export interface DiscordEventOptions<
 	name: K;
 	/** Detach the listener after its first call. Defaults to `false`. */
 	once?: boolean;
-	/** Runs when the event fires. Method variance supports client subclasses. */
-	method(client: C, ...args: EventArgs<T, K>): void | Promise<void>;
+	/** Runs when the event fires. */
+	method: (client: C, ...args: EventArgs<T, K>) => void | Promise<void>;
 }
 
 /**

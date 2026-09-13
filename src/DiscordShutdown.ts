@@ -11,7 +11,7 @@ export interface DiscordShutdownOptions {
 	/** Total deadline shared by all phases; defaults to 7,000ms. */
 	budgetMs?: number;
 	/** Receives task failures, phase timeouts, and skipped phases. */
-	onError?: (label: string, error: unknown) => void;
+	onError?: (label: string, error: unknown) => void | Promise<void>;
 }
 
 /** Reject invalid timer values rather than allowing immediate/overflow timers. */
@@ -37,10 +37,10 @@ export async function runDiscordShutdown(
 	for (const phase of phases) validateShutdownTimeout(phase.timeoutMs ?? 1_500);
 	const deadline = performance.now() + budget;
 	const failures: { label: string; error: unknown }[] = [];
-	const report = (label: string, error: unknown) => {
+	const report = async (label: string, error: unknown) => {
 		failures.push({ label, error });
 		try {
-			options.onError?.(label, error);
+			await options.onError?.(label, error);
 		} catch (reportError) {
 			failures.push({ label: `${label}:reporter`, error: reportError });
 		}
@@ -48,7 +48,7 @@ export async function runDiscordShutdown(
 	for (const phase of phases) {
 		const remaining = deadline - performance.now();
 		if (remaining <= 0) {
-			report(
+			await report(
 				phase.label,
 				new Error("Shutdown budget exhausted; phase skipped"),
 			);
@@ -71,10 +71,11 @@ export async function runDiscordShutdown(
 		if (results === null) {
 			const error = new Error(`Shutdown phase timed out after ${timeoutMs}ms`);
 			controller.abort(error);
-			report(phase.label, error);
+			await report(phase.label, error);
 		} else {
 			for (const result of results) {
-				if (result.status === "rejected") report(phase.label, result.reason);
+				if (result.status === "rejected")
+					await report(phase.label, result.reason);
 			}
 		}
 	}

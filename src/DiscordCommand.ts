@@ -45,13 +45,13 @@ export interface DiscordCommandOptions<C extends Client = Client> {
 	data: CommandData;
 	/** Consumer-defined data — see {@link DiscordCommandMetadata}. */
 	metadata: DiscordCommandMetadata;
-	/** Runs when the command is invoked. Method variance supports client subclasses. */
-	execute(client: C, interaction: CommandInteraction): void | Promise<void>;
+	/** Runs when the command is invoked. */
+	execute: (client: C, interaction: CommandInteraction) => void | Promise<void>;
 	/** Runs when an option with autocomplete enabled is focused. */
-	autocomplete?(
+	autocomplete?: (
 		client: C,
 		interaction: AutocompleteInteraction,
-	): void | Promise<void>;
+	) => void | Promise<void>;
 }
 
 /**
