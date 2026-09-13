@@ -95,10 +95,7 @@ export class DiscordEvent<
 	/** Whether the listener detaches after its first call. */
 	public readonly once: boolean;
 	/** Runs when the event fires. */
-	public readonly method: (
-		client: C,
-		...args: EventArgs<T, K>
-	) => void | Promise<void>;
+	public readonly method: DiscordEventOptions<T, K, C>["method"];
 
 	constructor(options: DiscordEventOptions<T, K, C>) {
 		this.type = options.type;

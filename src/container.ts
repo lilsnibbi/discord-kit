@@ -38,15 +38,26 @@ export interface Container {
 export const container = {} as Container;
 
 /**
- * Returns the live client, throwing if no `DiscordClient` has been constructed
- * yet.
+ * Returns the active client, throwing before construction or after destruction.
  *
- * @throws {Error} If accessed before a `DiscordClient` exists.
+ * Pass a client class to also check its runtime type and retrieve subclass members.
+ * @throws {Error} If no active client exists or its class does not match.
  */
-export function getClient(): DiscordClient {
+export function getClient(): DiscordClient;
+export function getClient<C extends DiscordClient>(
+	clientType: abstract new (...args: never[]) => C,
+): C;
+export function getClient(
+	clientType?: abstract new (...args: never[]) => DiscordClient,
+): DiscordClient {
 	if (!container.client) {
 		throw new Error(
 			"No DiscordClient has been constructed yet — the container is empty.",
+		);
+	}
+	if (clientType && !(container.client instanceof clientType)) {
+		throw new Error(
+			`The active DiscordClient is not an instance of ${clientType.name}`,
 		);
 	}
 

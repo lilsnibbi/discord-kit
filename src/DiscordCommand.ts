@@ -78,15 +78,9 @@ export class DiscordCommand<C extends Client = Client> {
 	/** The slash or context menu command definition. */
 	public readonly data: CommandData;
 	/** Runs when the command is invoked. */
-	public readonly execute: (
-		client: C,
-		interaction: CommandInteraction,
-	) => void | Promise<void>;
+	public readonly execute: DiscordCommandOptions<C>["execute"];
 	/** Runs when an option with autocomplete enabled is focused. */
-	public readonly autocomplete?: (
-		client: C,
-		interaction: AutocompleteInteraction,
-	) => void | Promise<void>;
+	public readonly autocomplete?: DiscordCommandOptions<C>["autocomplete"];
 	/** Consumer-defined data — see {@link DiscordCommandMetadata}. */
 	public metadata: DiscordCommandMetadata;
 
