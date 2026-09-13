@@ -10,3 +10,9 @@ export * from "./DiscordClient";
 export * from "./DiscordCommand";
 export * from "./DiscordEvent";
 export * from "./DiscordPagination";
+export type { DiscordModuleOptions } from "./DiscordModuleLoader";
+export { runDiscordShutdown } from "./DiscordShutdown";
+export type {
+	DiscordShutdownPhase,
+	DiscordShutdownOptions,
+} from "./DiscordShutdown";
