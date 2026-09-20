@@ -9,6 +9,7 @@
       },
       "devDependencies": {
         "@biomejs/biome": "2.5.12",
+        "@lilsnibbi/dots": "github:lilsnibbi/dots#9de67a5844a4d53f98786d82f6e4c4d623beb823",
         "@types/bun": "1.4.2",
         "discord.js": "^14.27.0",
         "typescript": "7.0.2",
@@ -48,6 +49,8 @@
     "@discordjs/util": ["@discordjs/util@1.2.0", "", { "dependencies": { "discord-api-types": "^0.38.33" } }, "sha512-3LKP7F2+atl9vJFhaBjn4nOaSWahZ/yWjOvA4e5pnXkt2qyXRCHLxoBQy81GFtLGCq7K9lPm9R517M1U+/90Qg=="],
 
     "@discordjs/ws": ["@discordjs/ws@1.2.3", "", { "dependencies": { "@discordjs/collection": "^2.1.0", "@discordjs/rest": "^2.5.1", "@discordjs/util": "^1.1.0", "@sapphire/async-queue": "^1.5.2", "@types/ws": "^8.5.10", "@vladfrangu/async_event_emitter": "^2.2.4", "discord-api-types": "^0.38.1", "tslib": "^2.6.2", "ws": "^8.17.0" } }, "sha512-wPlQDxEmlDg5IxhJPuxXr3Vy9AjYq5xCvFWGJyD7w7Np8ZGu+Mc+97LCoEc/+AYCo2IDpKioiH0/c/mj5ZR9Uw=="],
+
+    "@lilsnibbi/dots": ["@lilsnibbi/dots@github:lilsnibbi/dots#9de67a5", {}, "lilsnibbi-dots-9de67a5", "sha512-yumM42DQ/4HsbMyhbK/NRgnYjnfx0t0JWSyhDP+WWClG0ezLxwUr9aqUPYNgYSxDkVLXTaSC4cZ70C8WjlZ1WQ=="],
 
     "@lilsnibbi/logger": ["@lilsnibbi/logger@1.1.1", "", {}, "sha512-lYAJxGmfzAGbEioOzN8vOgJFJ6JXzKr4G4wDQ/epDiZSnMY24jlKpP281e/1feLgyJqhCf017WheMbMTrQatSQ=="],
 
