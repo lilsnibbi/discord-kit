@@ -21,6 +21,17 @@
 			"addLabels": ["bun"]
 		},
 		{
+			"description": "Group GitHub Actions updates",
+			"matchManagers": ["github-actions"],
+			"groupName": "GitHub Actions",
+			"addLabels": ["github-actions"]
+		},
+		{
+			"description": "Highlight major updates",
+			"matchUpdateTypes": ["major"],
+			"addLabels": ["major-update"]
+		},
+		{
 			"description": "Keep Discord peer and development versions aligned",
 			"matchPackageNames": ["discord.js"],
 			"rangeStrategy": "bump",
@@ -31,17 +42,6 @@
 			"matchPackageNames": ["@lilsnibbi/logger"],
 			"rangeStrategy": "bump",
 			"addLabels": ["runtime"]
-		},
-		{
-			"description": "Group GitHub Actions updates",
-			"matchManagers": ["github-actions"],
-			"groupName": "GitHub Actions",
-			"addLabels": ["github-actions"]
-		},
-		{
-			"description": "Highlight major updates",
-			"matchUpdateTypes": ["major"],
-			"addLabels": ["major-update"]
 		}
 	]
 }
