@@ -30,18 +30,6 @@
 			"description": "Highlight major updates",
 			"matchUpdateTypes": ["major"],
 			"addLabels": ["major-update"]
-		},
-		{
-			"description": "Keep Discord peer and development versions aligned",
-			"matchPackageNames": ["discord.js"],
-			"rangeStrategy": "bump",
-			"addLabels": ["discord"]
-		},
-		{
-			"description": "Label logger runtime updates",
-			"matchPackageNames": ["@lilsnibbi/logger"],
-			"rangeStrategy": "bump",
-			"addLabels": ["runtime"]
 		}
 	]
 }
